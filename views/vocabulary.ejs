@@ -8,11 +8,16 @@
 		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	<body>
-		<%#controller/method everything n form is dependent on whats on here %>
+		<h1>Six graders word for the week.</h1>
+
+		<%# everything n form is dependent on whats on here %>
 		<form action="/vocabulary/createVocabulary" method="POST">
-			<input type="text" placeholder="Enter Vocab Item" name="vocabularyItem" />
+			<input type="text" placeholder="Enter Vocab Item" name="Vocabulary" />
+			<input type="text" name="Definition" />
 			<input type="submit" />
 		</form>
+		<p>My page</p>
+		<%= data %>
 
 		<button href="/logout">Logout</button>
 
