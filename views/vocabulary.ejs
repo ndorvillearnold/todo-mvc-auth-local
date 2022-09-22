@@ -13,11 +13,26 @@
 		<%# everything n form is dependent on whats on here %>
 		<form action="/vocabulary/createVocabulary" method="POST">
 			<input type="text" placeholder="Enter Vocab Item" name="Vocabulary" />
-			<input type="text" name="Definition" />
+			<input type="text" placeholder="Enter Vaocabulary Definition here" style="width: 200px" name="Definition"  />
 			<input type="submit" />
 		</form>
 		<p>My page</p>
-		<%= data %>
+		
+
+        <ul>
+            <% data.forEach( vocabword => { %>
+                    <li>class='vocabularyItem' data-id='<%= vocabword.word%>'</li>
+                    <span><%= vocabword.word %></span>
+                     <span>	Definition: <%=  vocabword.definition %></span>
+                      
+                    </li>
+            <% }) %>    
+            </ul>
+
+           
+
+
+
 
 		<button href="/logout">Logout</button>
 

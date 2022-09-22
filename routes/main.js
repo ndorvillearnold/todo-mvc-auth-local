@@ -6,9 +6,9 @@ const { ensureAuth, ensureGuest } = require('../middleware/auth')
 const vocabularyController = require('../controllers/vocabulary')
 
 //People always make mistake with this ROUTE <form action="/vocabulary/createVocabulary" method="POST">   
-router.get('/', vocabularyController.getVocabulary)
+// router.get('/', vocabularyController.getVocabulary)
 
-// router.get('/', homeController.getIndex)
+router.get('/', homeController.getIndex)
 router.get('/login', authController.getLogin)
 router.post('/login', authController.postLogin)
 router.get('/logout', authController.logout)
