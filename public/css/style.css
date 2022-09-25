@@ -1,4 +1,4 @@
-h1{
+h1 {
     color: red;
 }
 .completed{
@@ -7,4 +7,10 @@ h1{
 }
 .not{
     text-decoration: underline;
+}
+
+.center{
+	display: flex;
+    align-items: center;
+    justify-content: center;
 }

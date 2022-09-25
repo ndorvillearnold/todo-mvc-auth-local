@@ -35,11 +35,22 @@ bcrypt, connect-mongo, dotenv, ejs, express, express-flash, express-session, mon
 # console log so i can see whats coming on the screen to see if all the pages are connected
 
 
+server talks to router
+router talks to controllers
+contoller talks to both model and views
+to loop all around
+view talks back to the server (submitting forms, etc)
+
+only add auth if need to authenticate
+
+
 
 
 
 
 # Things to add
+
+-tailwind images
 
 - Create a `.env` file and add the following as `key: value`
 

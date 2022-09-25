@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const VocabularySchema = new mongoose.Schema({
+const StudentlistSchema = new mongoose.Schema({
     word: {
         type: String,
     },
@@ -7,4 +7,4 @@ const VocabularySchema = new mongoose.Schema({
         type: String,
     },
 })
-module.exports = mongoose.model('Vocabulary', VocabularySchema);
+module.exports = mongoose.model('Studentlist', StudentlistSchema);

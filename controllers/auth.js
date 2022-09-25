@@ -10,6 +10,14 @@ exports.getLogin = (req, res) => {
     title: 'Login'
   })
 }
+exports.getLogin = (req, res) => {
+  if (req.user) {
+    return res.redirect('/studentlist/createStudentlist')
+  }
+  res.render('login', {
+    title: 'Login'
+  })
+}
 
 exports.postLogin = (req, res, next) => {
   const validationErrors = []
@@ -38,7 +46,25 @@ exports.postLogin = (req, res, next) => {
       res.redirect(req.session.returnTo || '/vocabulary')
     })
   })(req, res, next)
+
+  passport.authenticate('local', (err, user, info) => {
+    if (err) { return next(err) }
+    if (!user) {
+      req.flash('errors', info)
+      return res.redirect('/login')
+    }
+    req.logIn(user, (err) => {
+
+      console.log(user)
+      console.log(user['_id'])
+
+      if (err) { return next(err) }
+      req.flash('success', { msg: 'Success! You are logged in.' })
+      res.redirect(req.session.returnTo || '/studentlist')
+    })
+  })(req, res, next)
 }
+
 
 exports.logout = (req, res) => {
   req.logout(() => {
@@ -53,7 +79,13 @@ exports.logout = (req, res) => {
 
 exports.getSignup = (req, res) => {
   if (req.user) {
-    return res.redirect('/create/')
+   
+    if (req.user.type !== "studentlist") {
+      return res.redirect('/studentlist/createStudentlist')
+    } else {
+      return res.redirect('/vocabulary/createVocabulary')
+
+    }
   }
   res.render('signup', {
     title: 'Create Account'
@@ -105,6 +137,15 @@ exports.postSignup = (req, res, next) => {
           return next(err)
         }
         res.redirect('/vocabulary/createVocabulary')
+      })
+    });
+    user.save((err) => {
+      if (err) { return next(err) }
+      req.logIn(user, (err) => {
+        if (err) {
+          return next(err)
+        }
+        res.redirect('/studentlist/createStudentlist')
       })
     })
   })

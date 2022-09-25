@@ -20,4 +20,10 @@ router.post('/createVocabulary', vocabularyController.createVocabulary)
 
 module.exports = router
 
+// server talks to router
+// router talks to controllers
+// contoller talks to both model and views
+// to loop all around
+// view talks back to the server (submitting forms, etc)
+
 
