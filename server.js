@@ -3,6 +3,8 @@ const app = express()
 const mongoose = require('mongoose')
 const passport = require('passport')
 const session = require('express-session')
+
+//It keeps us logged in even if we leave
 const MongoStore = require('connect-mongo')(session)
 const flash = require('express-flash')
 const logger = require('morgan')
@@ -19,6 +21,8 @@ require('./config/passport')(passport)
 connectDB()
 
 app.set('view engine', 'ejs')
+
+//any file we put in,  we wont need to add public path since we have public here
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())

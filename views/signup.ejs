@@ -3,24 +3,41 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/css/style.css" type="text/css"> 
+		<meta name="viewport" />
 		<title>Document</title>
-	</head>
+	
+
+
 	<body>
-		<% if (locals.messages.errors) { %> <% messages.errors.forEach( el => { %>
-		<div class="alert alert-danger"><%= el.msg %></div>
-		<% }) %> <% } %>
-		<form action="/signup" method="POST">
-			<input type="text" name="userName" placeholder="User Name" />
-			<input type="email" name="email" placeholder="Email" />
-			<input type="password" name="password" placeholder="Password" required />
-			<input
-				type="password"
-				name="confirmPassword"
-				placeholder="Confirm Password"
-				required
-			/>
-			<input type="submit" />
-		</form>
+		<div class="wrapper">
+			<img class="backgroundImg" src="/css/img/background.jpg" alt="" srcset="">
+	
+				<div >
+					<% if (locals.messages.errors) { %> <% messages.errors.forEach( el => { %>
+					<div class="alert alert-danger"><%= el.msg %></div>
+					<% }) %> <% } %>
+					<form  class="form" action="/signup" method="POST">
+
+						
+			<p><strong>Username:<strong><input type="text" name="userName" placeholder="User Name" /> 
+		
+		
+			<strong>Email:<strong><input type="email" name="email" placeholder="Email" />
+			<br>
+			<strong>Password:</strong><input type="password" name="password" placeholder="Password" required />
+			<br>
+			<strong>Confirm Password:</strong><input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+
+			<label for="TeacherVerification">Are you a teacher?</label>
+			<input type="checkbox" name="TeacherVerification" id="">
+			<br>
+			<input type="submit" /> 
+		</p>
+	
+	</form>
+				</div>
+		</div>
+
 	</body>
 </html>

@@ -1,16 +1,35 @@
 h1 {
-    color: red;
+	color: red;
 }
-.completed{
-    text-decoration: line-through;
-    color: gray;
+.completed {
+	text-decoration: line-through;
+	color: gray;
 }
-.not{
-    text-decoration: underline;
+.not {
+	text-decoration: underline;
 }
 
-.center{
+.center {
 	display: flex;
-    align-items: center;
-    justify-content: center;
+	align-items: center;
+	justify-content: center;
+}
+
+.backgroundImg {
+	max-width: 65vw;
+}
+.wrapper{
+    display:flex;
+}
+
+.form{
+    display:flex;
+    flex-direction: column;
+    gap: 2rem;
+    
+}
+
+.signup{
+
+    padding-top: 50%;
 }
