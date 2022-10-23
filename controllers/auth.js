@@ -21,17 +21,17 @@ exports.getLogin = (req, res) => {
 
 
 exports.postLogin = (req, res, next) => {
-  console.log('line 24')
+
   const validationErrors = []
   if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
   if (validator.isEmpty(req.body.password)) validationErrors.push({ msg: 'Password cannot be blank.' })
-  console.log('line 28')
+
   if (validationErrors.length) {
     req.flash('errors', validationErrors)
     return res.redirect('/login')
   }
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
-  console.log('line 34')
+
   passport.authenticate('local', (err, user, info) => {
     if (err) { return next(err) }
     if (!user) {

@@ -86,3 +86,6 @@ front end - then model
 
 
    //signup page appear but dont sign anyone up
+
+   can add cosmetic for messages "are you sure your a teacher"
+   go through auth and comment what i expect lines (PUSH)
