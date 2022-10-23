@@ -1,14 +1,19 @@
 const passport = require('passport')
 const validator = require('validator')
-const User = require('../models/User')
+const Student = require('../models/Student')
 const Teacher = require('../models/Teacher')
 
+
 exports.getLogin = (req, res) => {
-  if (req.user.type === 'teacher') {
-    res.redirect('/vocabulary/createVocabulary')
-  } else (
-    res.redirect('/studentlist/createStudentlist')
-  )
+  // if(req.user){
+  //   if (req.user.type === "teacher") {
+  //     res.redirect('/vocabulary')
+  //   } else {
+
+  //     res.redirect('/studentlist')
+  //   }
+  // }
+
   res.render('login', {
     title: 'Login'
   })
@@ -16,16 +21,17 @@ exports.getLogin = (req, res) => {
 
 
 exports.postLogin = (req, res, next) => {
+  console.log('line 24')
   const validationErrors = []
   if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
   if (validator.isEmpty(req.body.password)) validationErrors.push({ msg: 'Password cannot be blank.' })
-
+  console.log('line 28')
   if (validationErrors.length) {
     req.flash('errors', validationErrors)
     return res.redirect('/login')
   }
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
-
+  console.log('line 34')
   passport.authenticate('local', (err, user, info) => {
     if (err) { return next(err) }
     if (!user) {
@@ -34,34 +40,17 @@ exports.postLogin = (req, res, next) => {
     }
     req.logIn(user, (err) => {
 
-      console.log(user)
-      console.log(user['_id'])
-
       if (err) { return next(err) }
+      if (req.user.type === 'teacher') {
+        res.redirect("/vocabulary/createVocabulary")
+      } else {
+        res.redirect("/studentlist/createStudentlist")
+      }
       req.flash('success', { msg: 'Success! You are logged in.' })
-      res.redirect(req.session.returnTo || '/vocabulary')
-    })
-  })(req, res, next)
 
-  passport.authenticate('local', (err, user, info) => {
-    if (err) { return next(err) }
-    if (!user) {
-      req.flash('errors', info)
-      return res.redirect('/login')
-    }
-    req.logIn(user, (err) => {
-
-      console.log(user)
-      console.log(user['_id'])
-
-      if (err) { return next(err) }
-      req.flash('success', { msg: 'Success! You are logged in.' })
-      res.redirect(req.session.returnTo || '/studentlist')
     })
   })(req, res, next)
 }
-
-
 exports.logout = (req, res) => {
   req.logout(() => {
     console.log('User has logged out.')
@@ -75,13 +64,13 @@ exports.logout = (req, res) => {
 
 exports.getSignup = (req, res) => {
   //if already an existing user
-  if (req.user) {
-    if (req.user.type !== "teacher") {
-      res.redirect('/studentlist/createStudentlist')
-    } else {
-      res.redirect('/vocabulary/createVocabulary')
-    }
-  }
+  // if (req.user) {
+  //   if (req.user.type !== "teacher") {
+  //     res.redirect('/studentlist/createStudentlist')
+  //   } else {
+  //     res.redirect('/vocabulary/createVocabulary')
+  //   }
+  // }
   res.render('signup', {
     title: 'Create Account'
   })
@@ -115,12 +104,13 @@ exports.postSignup = (req, res, next) => {
       email: req.body.email,
       password: req.body.password,
       type: 'teacher'
-
     })
+    console.log(user)
     Teacher.findOne({
+
       $or: [
         { email: req.body.email },
-        { userName: req.body.userName }
+        { userName: req.body.userName },
       ]
     }, (err, existingUser) => {
       if (err) { return next(err) }
@@ -128,38 +118,44 @@ exports.postSignup = (req, res, next) => {
         req.flash('errors', { msg: 'Account with that email address or username already exists.' })
         return res.redirect('../signup')
       }
-
-      user.save((err) => {
-        if (err) { return next(err) }
-        req.logIn(user, (err) => {
-          if (err) {
-            return next(err)
-          }
-          res.redirect('/vocabulary/createVocabulary')
+      //not req.user because the user.type is not made yet
+      if (user.type === "teacher") {
+        user.save((err) => {
+          if (err) { return next(err) }
+          req.logIn(user, (err) => {
+            if (err) {
+              return next(err)
+            }
+            res.redirect('/vocabulary/createVocabulary')
+          })
+        });
+      } else {
+        user.save((err) => {
+          if (err) { return next(err) }
+          req.logIn(user, (err) => {
+            if (err) {
+              return next(err)
+            }
+            res.redirect('/studentlist/createStudentlist')
+          })
         })
-      });
-      user.save((err) => {
-        if (err) { return next(err) }
-        req.logIn(user, (err) => {
-          if (err) {
-            return next(err)
-          }
-          res.redirect('/studentlist/createStudentlist')
-        })
-      })
+      }
     })
+    // If student -> 
   } else {
-    const user = new User({
+    console.log('student')
+    //adding capital Student from Model
+    //We have the recipie and under making data for the repicie and data from formsS
+    const user = new Student({
 
       userName: req.body.userName,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      type: 'student',
 
-    })
+    });
 
-
-
-    User.findOne({
+    Student.findOne({
       $or: [
         { email: req.body.email },
         { userName: req.body.userName }
@@ -170,16 +166,16 @@ exports.postSignup = (req, res, next) => {
         req.flash('errors', { msg: 'Account with that email address or username already exists.' })
         return res.redirect('../signup')
       }
-
-      user.save((err) => {
-        if (err) { return next(err) }
-        req.logIn(user, (err) => {
-          if (err) {
-            return next(err)
-          }
-          res.redirect('/vocabulary/createVocabulary')
-        })
-      });
+      //student never have to create
+      // user.save((err) => {
+      //   if (err) { return next(err) }
+      //   req.logIn(user, (err) => {
+      //     if (err) {
+      //       return next(err)
+      //     }
+      //     res.redirect('/vocabulary/createVocabulary')
+      //   })
+      // })
       user.save((err) => {
         if (err) { return next(err) }
         req.logIn(user, (err) => {
@@ -190,8 +186,7 @@ exports.postSignup = (req, res, next) => {
         })
       })
     })
-    console.log('student')
+
   }
-
-
 }
+

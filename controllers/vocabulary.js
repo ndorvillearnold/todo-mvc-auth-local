@@ -7,12 +7,12 @@ module.exports = {
             //return array
             let vocabularyWord = await Vocabulary.find()
             //ejs parsing through the information .. I can change what page looks like with this code
-           console.log(vocabularyWord)
-          // we made a list now passing to ejs / views
-            
+            console.log(vocabularyWord)
+            // we made a list now passing to ejs / views
+
             //got "data"" from line 8 on EJS file,  stored it in this variable (vocabularyWord)above line 8
             // <%= data  %>  coming from page vocabulary.ejs file.....   
-            res.render('vocabulary.ejs',{ data: vocabularyWord })
+            res.render('vocabulary.ejs', { data: vocabularyWord })
         } catch (err) {
             //console.log(err)     = { vocabularyItem: 'test1' }
         }

@@ -82,3 +82,7 @@ front end - then model
    time card created -unique ID with who created
    card view needs model of its OWN model
    creates card how is it visible for student
+
+
+
+   //signup page appear but dont sign anyone up
