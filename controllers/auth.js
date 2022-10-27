@@ -19,7 +19,9 @@ exports.getLogin = (req, res) => {
   })
 }
 
-
+/* -------------------------------------------------------------------------- */
+/*  User must enter a password if not flash message appears                   */
+/* -------------------------------------------------------------------------- */
 exports.postLogin = (req, res, next) => {
 
   const validationErrors = []
@@ -32,12 +34,20 @@ exports.postLogin = (req, res, next) => {
   }
   req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
 
+
+  /* -------------------------------------------------------------------------- */
+  /*  If not a user redirect them to login
+  /* -------------------------------------------------------------------------- */
   passport.authenticate('local', (err, user, info) => {
     if (err) { return next(err) }
     if (!user) {
       req.flash('errors', info)
       return res.redirect('/login')
     }
+
+    /* -------------------------------------------------------------------------- */
+    /*  If user is a teacher route to /vocab  else /student
+    /* -------------------------------------------------------------------------- */
     req.logIn(user, (err) => {
 
       if (err) { return next(err) }
@@ -51,6 +61,10 @@ exports.postLogin = (req, res, next) => {
     })
   })(req, res, next)
 }
+
+/* -------------------------------------------------------------------------- */
+/* User logs out 
+/* -------------------------------------------------------------------------- */
 exports.logout = (req, res) => {
   req.logout(() => {
     console.log('User has logged out.')
